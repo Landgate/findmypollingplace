@@ -1,0 +1,132 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <title>FindMyPollingPlace</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Polymer -->
+  <!-- 1. Load platform.js for polyfill support. -->
+  <!-- <script src="bower_components/platform/platform.js"></script> -->
+
+  <!-- 2. Use an HTML Import to bring in the element. -->
+  <!-- <link rel="import" href="http://www.polymer-project.org/components/core-icons/core-icons.html"> -->
+  <link rel="import" href="http://www.polymer-project.org/components/google-map/google-map.html">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <!-- endbower -->
+  <link rel="stylesheet" href="bower_components/angular-material/themes/indigo-theme.css" />
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/app.css">
+  <!-- endbuild -->
+
+  <!-- @TODO Stick this in via bower if it's needed -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<!-- @TODO Angularise! -->
+<body ng-app="appApp">
+  <!--[if lt IE 7]>
+  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div ng-controller="AppCtrl" layout="vertical" layout-fill>
+    <section layout="horizontal" flex>
+
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" component-id="left" is-locked-open="true">
+        <md-toolbar class="md-indigo-theme">
+          <h1 class="md-toolbar-tools">Polling Place Locator</h1>
+        </md-toolbar>
+        <md-content class="md-padding" ng-controller="LeftCtrl">
+          <form>
+            <md-input-group>
+              <md-input id="address_search" ng-model="searchToken" ng-model-options="{debounce: 1000}">
+
+              </md-input>
+            </md-input-group>
+          </form>
+
+          <div layout="row" layout-sm="column" layout-align="space-around" id="query_results">
+            <md-progress-circular mode="indeterminate" ng-show="data.querying"></md-progress-circular>
+
+            <md-content ng-show="data.queried">
+              <h5>Your nearest school is:</h5>
+              <h3>{{data.school}}</h3>
+
+              <h5>Your electorate is:</h5>
+              <h3>{{data.electorate}}</h3>
+            </md-content>
+          </div>
+
+          <md-content>
+            <md-subheader class="md-light-blue-dark-theme" ng-show="data.show_warning">
+              Your nearest school is outside of your electorate.<br>
+              <br>
+              If you intend to lodge a vote at this school you will need to submit and absentee vote.
+            </md-subheader>
+          </md-content>
+        </md-sidenav>
+
+        <md-content flex class="md-padding">
+          <div layout="vertical" layout-fill layout-align="center center">
+            <google-map libraries="visualization,places" latitude="-25.779" longitude="120" zoom="5" minZoom="4" maxZoom="20" fit>
+
+            </google-map>
+          </div>
+        </md-content>
+      </section>
+    </div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <!-- <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+</script> -->
+
+<!-- build:js(.) scripts/oldieshim.js -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<![endif]-->
+<!-- endbuild -->
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/hammerjs/hammer.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/services/GMESchoolLookup.js"></script>
+<script src="scripts/services/GMEElectorateLookup.js"></script>
+<!-- <script src="scripts/app.js"></script> -->
+<script src="scripts/controllers/AppCtrl.js"></script>
+<script src="scripts/controllers/LeftCtrl.js"></script>
+<script src="scripts/controllers/MapCtrl.js"></script>
+<!-- <script src="scripts/controllers/about.js"></script> -->
+<!-- endbuild -->
+</body>
+</html>
